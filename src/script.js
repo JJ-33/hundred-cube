@@ -22,7 +22,7 @@ const parameters = {
     position: {
         x:0,y:0,z:0
     },
-    spacing: 0,
+    spacing: 0.1,
     amount: 10,
 
     moveObjects: () => {
@@ -42,7 +42,7 @@ function moveObjects(position,spacing=0) { //TODO: Make it so that you can move 
             col.forEach((obj,i) => {
 
                         // Decide on the end color as a function of the grouped variable
-                const endColor = (spacing===0) ? new THREE.Color('skyblue')  : obj.color //TODO make it so that you can change the color it transitions into
+                const endColor = (spacing===0) ? new THREE.Color(0xffffff - Math.floor(Math.random()*50))  : obj.color //TODO make it so that you can change the color it transitions into
         
                 // Animate color transition
                 gsap.to(obj.mesh.material.color,{duration:1,r:endColor.r,g:endColor.g,b:endColor.b})
@@ -91,7 +91,7 @@ for (let k = 0; k < parameters.amount;k++){
             objects[k][j][i] = 
             {
                 mesh:mesh,
-                color: new THREE.Color(colors[Math.floor(Math.random() * colors.length)])
+                color: new THREE.Color(0xFF00FF + Math.floor(Math.random()*100))
             }
         }
     }
@@ -121,7 +121,7 @@ window.addEventListener('resize', () =>
 })
 
 // Camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000)
 camera.position.z = 3
 scene.add(camera)
 
