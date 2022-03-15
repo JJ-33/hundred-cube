@@ -37,25 +37,31 @@ function moveObjects(position,spacing=0) { //TODO: Make it so that you can move 
     // height of each cube
     const size = 1
     
-    objects.forEach((obj,i) => {
- 
-        // Decide on the end color as a function of the grouped variable
-         const endColor = (spacing===0) ? new THREE.Color('skyblue')  : obj.color //TODO make it so that you can change the color it transitions into
- 
-         // Animate color transition
-         gsap.to(obj.mesh.material.color,{duration:1,r:endColor.r,g:endColor.g,b:endColor.b})
+    objects.forEach((slice,k) => {
+        slice.forEach((col,j) => {
+            col.forEach((obj,i) => {
 
- 
-         // Animate movement
-         gsap.to(obj.mesh.position, {
-                                    duration: 1,
-                                    x: position.x,
-                                    y: position.y + i*(size + spacing),
-                                    z: position.z,
-                                    })
+                        // Decide on the end color as a function of the grouped variable
+                const endColor = (spacing===0) ? new THREE.Color('skyblue')  : obj.color //TODO make it so that you can change the color it transitions into
+        
+                // Animate color transition
+                gsap.to(obj.mesh.material.color,{duration:1,r:endColor.r,g:endColor.g,b:endColor.b})
 
+        
+                // Animate movement
+                gsap.to(obj.mesh.position, {
+                                            duration: 1,
+                                            x: position.x + j*(size + spacing),
+                                            y: position.y + i*(size + spacing),
+                                            z: position.z + k*(size + spacing),
+                                        })
+
+            })
+        })
     })
-    console.log(objects[0].mesh.position)
+ 
+   
+    console.log(objects[0][0][0].mesh.position)
  }
 
 const positionFolder = gui.addFolder('Position')
@@ -71,17 +77,23 @@ gui.add(parameters,'moveObjects')
 const objects = []
 const colors = ['blue','purple','orange','cyan','white','pink']
 
-for(let i = 0; i < parameters.amount; i += 1){
+for (let k = 0; k < parameters.amount;k++){
+    objects[k]= []
+    for (let j = 0; j < parameters.amount; j++){
+        objects[k][j] = []
+        for(let i = 0; i < parameters.amount; i += 1){
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: colors[i] })
-    const mesh = new THREE.Mesh(geometry, material)
-    scene.add(mesh)
+            const geometry = new THREE.BoxGeometry(1, 1, 1)
+            const material = new THREE.MeshBasicMaterial({ color: colors[i] })
+            const mesh = new THREE.Mesh(geometry, material)
+            scene.add(mesh)
 
-    objects[i] =
-    {
-        mesh:mesh,
-        color: new THREE.Color(colors[Math.floor(Math.random() * colors.length)])
+            objects[k][j][i] = 
+            {
+                mesh:mesh,
+                color: new THREE.Color(colors[Math.floor(Math.random() * colors.length)])
+            }
+        }
     }
 }
 
