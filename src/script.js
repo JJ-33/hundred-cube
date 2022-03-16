@@ -2,7 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as lil from 'lil-gui'
-import gsap from 'gsap'
+import gsap, { random } from 'gsap'
 
 
 
@@ -88,10 +88,11 @@ for (let k = 0; k < parameters.amount;k++){
             const mesh = new THREE.Mesh(geometry, material)
             scene.add(mesh)
 
+            // going from 0 to 50 is good
             objects[k][j][i] = 
             {
                 mesh:mesh,
-                color: new THREE.Color(0xFF00FF + Math.floor(Math.random()*100))
+                color: [new THREE.Color(0xFF00FF + Math.floor(Math.random()*100)),new THREE.Color(0x007700 + Math.floor(Math.random()*100))][Math.floor(Math.random()*2)]
             }
         }
     }
